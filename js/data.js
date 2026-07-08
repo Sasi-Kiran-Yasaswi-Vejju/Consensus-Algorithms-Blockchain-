@@ -711,6 +711,11 @@ export const BLOCKCHAINS = [
 
 export const SMART_CONTRACTS = [
   {
+    blockchain: 'Bitcoin', consensus: 'PoW', languages: ['Miniscript', 'Script'],
+    compiler: 'Bitcoin Script Interpreter', vm: 'Bitcoin Script Engine',
+    examples: ['Multi-signature Vaults', 'HTLC (Lightning Network)', 'Timelocks']
+  },
+  {
     blockchain: 'Ethereum', consensus: 'PoS', languages: ['Solidity', 'Vyper'],
     compiler: 'solc / Vyper Compiler', vm: 'EVM (Ethereum Virtual Machine)',
     examples: ['ERC-20 Token', 'Uniswap DEX', 'Aave Lending', 'OpenSea NFT']

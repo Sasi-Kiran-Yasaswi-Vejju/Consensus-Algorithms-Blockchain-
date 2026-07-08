@@ -57,6 +57,7 @@ function renderQuestion() {
   const q = QUIZ_QUESTIONS[currentQuestion];
   const qNum = currentQuestion + 1;
   const progress = (qNum / QUIZ_QUESTIONS.length) * 100;
+  const answeredThisQ = answers[currentQuestion] !== undefined;
 
   wrapper.innerHTML = `
     <div class="quiz-header">
@@ -66,36 +67,59 @@ function renderQuestion() {
           Score: ${score}/${currentQuestion}
         </span>
       </div>
-      <div class="quiz-timer" id="quiz-timer">30s</div>
+      <div class="quiz-timer" id="quiz-timer">${answeredThisQ ? 'Solved' : '30s'}</div>
     </div>
     <div class="quiz-progress-bar">
       <div class="quiz-progress-fill" style="width: ${progress}%"></div>
     </div>
     <div class="quiz-question">${q.q}</div>
     <div class="quiz-options" id="quiz-options">
-      ${q.options.map((opt, i) => `
-        <button class="quiz-option" id="opt-${i}" onclick="window.selectAnswer(${i})">
-          <span class="option-letter">${['A', 'B', 'C', 'D'][i]}</span>
-          <span>${opt}</span>
-        </button>
-      `).join('')}
+      ${q.options.map((opt, i) => {
+        let stateClass = '';
+        if (answeredThisQ) {
+          const userAns = answers[currentQuestion];
+          if (i === q.answer) stateClass = 'correct';
+          else if (i === userAns.selected && !userAns.isCorrect) stateClass = 'incorrect';
+        }
+        return `
+          <button class="quiz-option ${stateClass}" id="opt-${i}" onclick="window.selectAnswer(${i})" ${answeredThisQ ? 'disabled' : ''}>
+            <span class="option-letter">${['A', 'B', 'C', 'D'][i]}</span>
+            <span>${opt}</span>
+          </button>
+        `;
+      }).join('')}
     </div>
-    <div class="quiz-explanation" id="quiz-explanation">
+    <div class="quiz-explanation ${answeredThisQ ? 'show' : ''}" id="quiz-explanation">
       <strong>💡 Explanation:</strong> ${q.explanation}
     </div>
     <div style="display: flex; gap: 1rem; justify-content: space-between; flex-wrap: wrap;">
-      <button class="btn-outline-custom" onclick="window.skipQuestion()" id="skip-btn" style="font-size: 0.875rem; padding: 0.6rem 1.25rem;">
-        <i class="fas fa-forward me-1"></i>Skip
-      </button>
-      <button class="btn-primary-custom" id="next-btn" onclick="window.nextQuestion()" disabled style="font-size: 0.875rem; padding: 0.6rem 1.25rem;">
+      <div>
+        <button class="btn-outline-custom" onclick="window.prevQuestion()" id="prev-btn" ${currentQuestion === 0 ? 'disabled' : ''} style="font-size: 0.875rem; padding: 0.6rem 1.25rem;">
+          <i class="fas fa-arrow-left me-1"></i>Prev
+        </button>
+        <button class="btn-outline-custom" onclick="window.skipQuestion()" id="skip-btn" ${answeredThisQ ? 'style="display:none;"' : ''} style="font-size: 0.875rem; padding: 0.6rem 1.25rem; margin-left: 0.5rem;">
+          <i class="fas fa-forward me-1"></i>Skip
+        </button>
+      </div>
+      <button class="btn-primary-custom" id="next-btn" onclick="window.nextQuestion()" ${!answeredThisQ ? 'disabled' : ''} style="font-size: 0.875rem; padding: 0.6rem 1.25rem;">
         ${currentQuestion < QUIZ_QUESTIONS.length - 1 ? 'Next Question <i class="fas fa-arrow-right ms-1"></i>' : 'See Results <i class="fas fa-trophy ms-1"></i>'}
       </button>
     </div>
   `;
 
-  answered = false;
-  startTimer();
+  answered = answeredThisQ;
+  if (!answeredThisQ) {
+    startTimer();
+  }
 }
+
+window.prevQuestion = function() {
+  clearInterval(timerInterval);
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    renderQuestion();
+  }
+};
 
 window.selectAnswer = function(selectedIndex) {
   if (answered) return;
@@ -106,7 +130,7 @@ window.selectAnswer = function(selectedIndex) {
   const isCorrect = selectedIndex === q.answer;
 
   if (isCorrect) score++;
-  answers.push({ question: currentQuestion, selected: selectedIndex, correct: q.answer, isCorrect });
+  answers[currentQuestion] = { question: currentQuestion, selected: selectedIndex, correct: q.answer, isCorrect };
 
   // Style options
   q.options.forEach((_, i) => {
@@ -125,7 +149,7 @@ window.selectAnswer = function(selectedIndex) {
   const nextBtn = document.getElementById('next-btn');
   if (nextBtn) nextBtn.disabled = false;
 
-  // Skip button becomes continue
+  // Hide skip
   const skipBtn = document.getElementById('skip-btn');
   if (skipBtn) skipBtn.style.display = 'none';
 };
@@ -136,7 +160,7 @@ window.skipQuestion = function() {
   clearInterval(timerInterval);
 
   const q = QUIZ_QUESTIONS[currentQuestion];
-  answers.push({ question: currentQuestion, selected: -1, correct: q.answer, isCorrect: false });
+  answers[currentQuestion] = { question: currentQuestion, selected: -1, correct: q.answer, isCorrect: false };
 
   // Reveal correct answer
   const correctBtn = document.getElementById(`opt-${q.answer}`);
@@ -210,9 +234,6 @@ function showResults() {
   else if (pct >= 60) { grade = 'C'; gradeColor = '#ffd740'; msg = '📚 Keep studying! Review the sections you struggled with.'; }
   else { grade = 'D'; gradeColor = '#ff5252'; msg = '💪 Don\'t give up! Revisit the fundamentals and try again.'; }
 
-  // Calculate breakdown
-  const wrongAns = answers.filter(a => !a.isCorrect);
-
   wrapper.innerHTML = `
     <div class="quiz-score-card">
       <div style="font-size: 3rem; margin-bottom: 1rem;">${pct >= 70 ? '🏆' : '📚'}</div>
@@ -230,7 +251,7 @@ function showResults() {
         </div>
         <div class="metric-item">
           <span class="metric-value" style="color: var(--danger);">${QUIZ_QUESTIONS.length - score}</span>
-          <span class="metric-label">Wrong</span>
+          <span class="metric-label">Wrong / Skipped</span>
         </div>
         <div class="metric-item">
           <span class="metric-value">${pct}%</span>
@@ -238,20 +259,41 @@ function showResults() {
         </div>
       </div>
 
-      ${wrongAns.length > 0 ? `
-        <div style="text-align: left; margin-bottom: 2rem; background: var(--glass-bg); border: var(--glass-border); border-radius: var(--radius-lg); padding: 1.25rem;">
-          <h4 style="color: var(--text-heading); font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em;">Review Missed Questions</h4>
-          ${wrongAns.slice(0, 5).map(a => {
-            const q = QUIZ_QUESTIONS[a.question];
-            return `
-              <div style="margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">Q${a.question + 1}: ${q.q.substring(0, 60)}...</p>
-                <p style="font-size: 0.8rem; color: var(--success);">✓ ${q.options[q.answer]}</p>
+      <div style="text-align: left; margin-bottom: 2rem; background: var(--glass-bg); border: var(--glass-border); border-radius: var(--radius-lg); padding: 1.5rem; max-height: 450px; overflow-y: auto;">
+        <h4 style="color: var(--text-heading); font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">
+          📊 Detailed Report (All Questions)
+        </h4>
+        ${QUIZ_QUESTIONS.map((q, idx) => {
+          const ansInfo = answers[idx] || { selected: -1, isCorrect: false };
+          const isCorrect = ansInfo.isCorrect;
+          const selectedText = ansInfo.selected === -1 ? 'Skipped' : q.options[ansInfo.selected];
+          const correctText = q.options[q.answer];
+
+          return `
+            <div style="margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <strong style="font-size: 0.9rem; color: var(--text-heading);">Q${idx + 1}: ${q.q}</strong>
+                <span style="font-size: 0.75rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 9999px; background: ${isCorrect ? 'rgba(0,230,118,0.15)' : 'rgba(255,82,82,0.15)'}; color: ${isCorrect ? 'var(--success)' : 'var(--danger)'};">
+                  ${isCorrect ? 'Correct' : ansInfo.selected === -1 ? 'Skipped' : 'Incorrect'}
+                </span>
               </div>
-            `;
-          }).join('')}
-        </div>
-      ` : ''}
+              <div style="font-size: 0.85rem; margin-left: 0.5rem; margin-bottom: 0.35rem;">
+                <span style="color: var(--text-muted);">Your Answer:</span> 
+                <span style="color: ${isCorrect ? 'var(--success)' : 'var(--danger)'}; font-weight: ${isCorrect ? '600' : 'normal'};">${selectedText}</span>
+              </div>
+              ${!isCorrect ? `
+                <div style="font-size: 0.85rem; margin-left: 0.5rem; margin-bottom: 0.35rem;">
+                  <span style="color: var(--text-muted);">Correct Answer:</span> 
+                  <span style="color: var(--success); font-weight: 600;">${correctText}</span>
+                </div>
+              ` : ''}
+              <div style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 0.5rem; padding: 0.5rem; background: rgba(255,255,255,0.02); border-radius: 0.25rem; margin-top: 0.5rem; border-left: 2px solid var(--primary-light);">
+                <strong>Explanation:</strong> ${q.explanation}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
 
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
         <button class="btn-primary-custom" onclick="window.startQuizNow()">

@@ -226,7 +226,7 @@ function renderConsensusWorkflow() {
           <div class="icon">${s.icon}</div>
           <div class="label">${s.label}</div>
         </div>
-        ${i < steps.length - 1 ? '<span class="workflow-arrow">↓</span>' : ''}
+        ${i < steps.length - 1 ? '<span class="workflow-arrow">➡️</span>' : ''}
       `).join('')}
     </div>
   `;
