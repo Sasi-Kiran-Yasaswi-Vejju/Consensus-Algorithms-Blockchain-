@@ -485,6 +485,57 @@ section {
   padding: 2rem;
 }
 
+.consensus-problems-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.consensus-problem-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: var(--trans-base);
+}
+
+.consensus-problem-card:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(108, 99, 255, 0.28);
+}
+
+.consensus-problem-icon {
+  width: 2.35rem;
+  height: 2.35rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.85rem;
+  background: rgba(108, 99, 255, 0.14);
+  font-size: 1.1rem;
+}
+
+.consensus-problem-title {
+  color: var(--text-heading);
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 0.2rem;
+}
+
+.consensus-problem-desc {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
 /* ─── ALGORITHM EXPLORER ─────────────────────────────────── */
 #explorer { background: var(--grad-section); }
 

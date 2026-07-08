@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initHeroCanvas();
   renderFundamentals();
+  renderConsensusProblems();
   renderConsensusWorkflow();
   initAlgoExplorer();
   renderBlockchainCards();
@@ -201,6 +202,50 @@ function renderFundamentals() {
       <h4>${c.name}</h4>
       <p>${c.desc}</p>
     </div>
+  `).join('');
+}
+
+// ─── CONSENSUS PROBLEMS ────────────────────────────────────
+function renderConsensusProblems() {
+  const grid = document.getElementById('consensus-problems-grid');
+  if (!grid) return;
+
+  const problems = [
+    {
+      icon: '🔒',
+      title: 'Double-Spending Prevention',
+      desc: 'Prevents the same digital asset from being spent more than once across the network.'
+    },
+    {
+      icon: '🌐',
+      title: 'Sybil Attack Resistance',
+      desc: 'Stops attackers from creating many fake identities to overwhelm honest participants.'
+    },
+    {
+      icon: '🛡️',
+      title: 'Byzantine Fault Tolerance',
+      desc: 'Keeps the network reliable even when some nodes behave maliciously or fail unpredictably.'
+    },
+    {
+      icon: '📋',
+      title: 'Fork Resolution',
+      desc: 'Chooses the canonical chain when competing blocks or temporary forks appear.'
+    },
+    {
+      icon: '🔄',
+      title: 'Transaction Ordering',
+      desc: 'Establishes a consistent order for conflicting transactions across all nodes.'
+    }
+  ];
+
+  grid.innerHTML = problems.map((problem, index) => `
+    <article class="consensus-problem-card animate-on-scroll delay-${(index % 5) + 1}">
+      <div class="consensus-problem-icon">${problem.icon}</div>
+      <div>
+        <h5 class="consensus-problem-title">${problem.title}</h5>
+        <p class="consensus-problem-desc">${problem.desc}</p>
+      </div>
+    </article>
   `).join('');
 }
 

@@ -74,6 +74,8 @@
   .layer-item { padding: 1.25rem; }
   .layer-label { font-size: var(--fs-xl); }
 
+  .consensus-problems-grid { grid-template-columns: 1fr; }
+
   .sc-table th, .sc-table td { padding: 0.6rem 0.75rem; font-size: var(--fs-xs); }
 }
 

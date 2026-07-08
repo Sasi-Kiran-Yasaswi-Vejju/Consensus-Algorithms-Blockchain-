@@ -193,15 +193,7 @@
         <div class="divider"></div>
 
         <h4 style="color: var(--text-heading); font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem;">Problems Solved by Consensus:</h4>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          ${[
-            '🔒 Double-spend attacks — spending the same coin twice',
-            '🌐 Sybil attacks — creating fake identities to gain control',
-            '⚠️ Byzantine failures — malicious or faulty node behavior',
-            '📋 Fork resolution — determining which chain is canonical',
-            '🔄 Transaction ordering — sequencing conflicting transactions'
-          ].map(p => `<div style="font-size: 0.875rem; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 0.5rem;">${p}</div>`).join('')}
-        </div>
+        <div id="consensus-problems-grid" class="consensus-problems-grid"></div>
       </div>
 
       <!-- Byzantine Generals -->
