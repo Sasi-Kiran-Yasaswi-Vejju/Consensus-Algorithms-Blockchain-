@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive educational dashboard exploring blockchain consensus algorithms — PoW, PoS, DPoS, PBFT, and more. Compare, visualize, and simulate with radar charts, timelines, and quizzes.">
+  <meta name="keywords" content="blockchain, consensus algorithms, proof of work, proof of stake, PBFT, DPoS, PoA, interactive, educational">
+  <meta name="author" content="Consensus Explorer">
+  <meta property="og:title" content="Consensus Algorithms in Blockchain — Interactive Explorer">
+  <meta property="og:description" content="Explore, compare, and understand blockchain consensus algorithms through interactive visualizations, animations, and simulations.">
+  <meta property="og:type" content="website">
+  <title>Consensus Algorithms in Blockchain — Interactive Comparative Explorer</title>
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛓️</text></svg>">
+</head>
+<body>
+
+<!-- Scroll Progress Bar -->
+<div id="scroll-progress"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════════════════════ -->
+<nav class="navbar" id="main-navbar">
+  <div class="container-fluid px-4">
+    <div class="d-flex align-items-center justify-content-between w-100">
+
+      <!-- Brand -->
+      <a href="#hero" class="navbar-brand">
+        <div class="brand-icon">⛓️</div>
+        <span class="d-none d-md-inline">Consensus<span style="color: var(--primary-light);">Explorer</span></span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <div class="d-none d-lg-flex align-items-center gap-1">
+        <a href="#fundamentals" class="nav-link">Fundamentals</a>
+        <a href="#consensus-intro" class="nav-link">Consensus</a>
+        <a href="#explorer" class="nav-link">Explorer</a>
+        <a href="#trilemma" class="nav-link">Trilemma</a>
+        <a href="#blockchains" class="nav-link">Blockchains</a>
+        <a href="#simulator" class="nav-link">Simulator</a>
+        <a href="#comparison" class="nav-link">Compare</a>
+        <a href="#timeline-section" class="nav-link">Timeline</a>
+        <a href="#quiz-section" class="nav-link">Quiz</a>
+      </div>
+
+      <!-- Actions -->
+      <div class="d-flex align-items-center gap-2">
+        <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+        <!-- Mobile hamburger -->
+        <button class="btn d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNav"
+                style="color: var(--text-primary); border: var(--glass-border); border-radius: var(--radius-md); padding: 0.4rem 0.7rem;">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div class="collapse d-lg-none" id="mobileNav" style="margin-top: 1rem; border-top: var(--glass-border); padding-top: 1rem;">
+      <div class="d-flex flex-column gap-1">
+        <a href="#fundamentals" class="nav-link" data-bs-toggle="collapse" data-bs-target="#mobileNav">Fundamentals</a>
+        <a href="#consensus-intro" class="nav-link" data-bs-toggle="collapse" data-bs-target="#mobileNav">What is Consensus?</a>
+        <a href="#explorer" class="nav-link" data-bs-toggle="collapse" data-bs-target="#mobileNav">Algorithm Explorer</a>
+        <a href="#trilemma" class="nav-link" data-bs-toggle="collapse" data-bs-target="#mobileNav">Blockchain Trilemma</a>
+        <a href="#blockchains" class="nav-link" data-bs-toggle="collapse" data-bs-target="#mobileNav">Real-world Blockchains</a>
+        <a href="#simulator" class="nav-link" data-bs-toggle="collapse" data-bs-target="#mobileNav">Consensus Simulator</a>
+        <a href="#comparison" class="nav-link" data-bs-toggle="collapse" data-bs-target="#mobileNav">Compare Algorithms</a>
+        <a href="#compatibility" class="nav-link" data-bs-toggle="collapse" data-bs-target="#mobileNav">Compatibility Matrix</a>
+        <a href="#timeline-section" class="nav-link" data-bs-toggle="collapse" data-bs-target="#mobileNav">Timeline</a>
+        <a href="#quiz-section" class="nav-link" data-bs-toggle="collapse" data-bs-target="#mobileNav">Quiz</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        Interactive Educational Dashboard
+      </div>
+
+      <h1 class="hero-title">
+        Consensus Algorithms<br>
+        <span class="gradient-text">in Blockchain</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Explore, compare, and understand <strong>12 consensus mechanisms</strong> through interactive
+        visualizations, animated simulations, real-world blockchain mappings, and a comprehensive quiz.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">12</span>
+          <span class="stat-label">Algorithms</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">10+</span>
+          <span class="stat-label">Blockchains</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">20</span>
+          <span class="stat-label">Quiz Questions</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">5</span>
+          <span class="stat-label">Simulators</span>
+        </div>
+      </div>
+
+      <div class="hero-cta">
+        <a href="#explorer" class="btn-primary-custom">
+          <i class="fas fa-rocket me-2"></i>Start Exploring
+        </a>
+        <a href="#quiz-section" class="btn-outline-custom">
+          <i class="fas fa-brain me-2"></i>Take the Quiz
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BLOCKCHAIN FUNDAMENTALS
+═══════════════════════════════════════════════════════════ -->
+<section id="fundamentals">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-cubes me-2"></i>Foundation</div>
+      <h2 class="section-title">Blockchain <span class="gradient-text">Fundamentals</span></h2>
+      <p class="section-subtitle">Master the core concepts that underpin every blockchain network before diving into consensus mechanisms.</p>
+    </div>
+
+    <!-- Animated Blockchain Workflow -->
+    <div class="animate-on-scroll" id="consensus-workflow"></div>
+
+    <!-- Concept Grid -->
+    <div class="concept-grid" id="fundamentals-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     WHAT IS CONSENSUS?
+═══════════════════════════════════════════════════════════ -->
+<section id="consensus-intro">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-handshake me-2"></i>Core Concept</div>
+      <h2 class="section-title">What is <span class="gradient-text">Consensus?</span></h2>
+      <p class="section-subtitle">Consensus is the mechanism by which distributed nodes agree on the canonical state of the blockchain without a central authority.</p>
+    </div>
+
+    <div class="consensus-info-grid animate-on-scroll">
+      <!-- Definition Card -->
+      <div class="glass-card">
+        <div class="card-glow"></div>
+        <h3 style="color: var(--text-heading); font-weight: 800; margin-bottom: 1rem; font-size: 1.25rem;">
+          <span class="gradient-text">📋 Definition</span>
+        </h3>
+        <p style="color: var(--text-secondary); line-height: 1.8;">A <strong style="color: var(--text-heading);">consensus algorithm</strong> is a fault-tolerant mechanism used in distributed computing and multi-agent systems to achieve the necessary agreement on a single data value or a single state of the network among distributed processes or multi-agent systems — such as with cryptocurrencies.</p>
+
+        <div class="divider"></div>
+
+        <h4 style="color: var(--text-heading); font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem;">Problems Solved by Consensus:</h4>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          ${[
+            '🔒 Double-spend attacks — spending the same coin twice',
+            '🌐 Sybil attacks — creating fake identities to gain control',
+            '⚠️ Byzantine failures — malicious or faulty node behavior',
+            '📋 Fork resolution — determining which chain is canonical',
+            '🔄 Transaction ordering — sequencing conflicting transactions'
+          ].map(p => `<div style="font-size: 0.875rem; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 0.5rem;">${p}</div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Byzantine Generals -->
+      <div class="byzantine-card">
+        <h3 style="color: var(--text-heading); font-weight: 800; margin-bottom: 1rem; font-size: 1.25rem;">
+          🛡️ Byzantine Generals Problem
+        </h3>
+        <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 1rem;">
+          Proposed by Lamport, Shostak & Pease (1982): several Byzantine army generals must coordinate an attack, but some generals may be traitors sending conflicting orders. How can loyal generals guarantee they all attack simultaneously despite traitors?
+        </p>
+        <div style="background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem;">
+          <div style="font-weight: 700; color: #a855f7; margin-bottom: 0.5rem;">🔑 The Mapping:</div>
+          <div style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.7;">
+            <strong>Generals</strong> → Network nodes<br>
+            <strong>Messages</strong> → Transactions & block proposals<br>
+            <strong>Traitors</strong> → Malicious or faulty nodes<br>
+            <strong>Attack Plan</strong> → Agreed blockchain state
+          </div>
+        </div>
+        <div style="background: rgba(108,99,255,0.1); border: 1px solid rgba(108,99,255,0.3); border-radius: var(--radius-md); padding: 1rem;">
+          <div style="font-weight: 700; color: var(--primary-light); margin-bottom: 0.5rem;">💡 Solution:</div>
+          <div style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.7;">
+            BFT consensus requires that fewer than 1/3 of nodes are Byzantine. PoW solves this through economic incentives (Nakamoto Consensus). PBFT solves it through cryptographic voting rounds.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why Blockchain Needs Consensus -->
+    <div class="glass-card animate-on-scroll" style="margin-top: 2rem; text-align: center; padding: 3rem 2rem;">
+      <h3 style="color: var(--text-heading); font-weight: 800; font-size: 1.5rem; margin-bottom: 2rem;">
+        Consensus Transaction Flow
+      </h3>
+      <div class="blockchain-workflow" style="flex-direction: row; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+        <div class="workflow-block"><div class="icon">👤</div><div class="label">User</div></div>
+        <span class="workflow-arrow" style="align-self: center;">→</span>
+        <div class="workflow-block"><div class="icon">📝</div><div class="label">Transaction</div></div>
+        <span class="workflow-arrow" style="align-self: center;">→</span>
+        <div class="workflow-block"><div class="icon">📡</div><div class="label">Broadcast</div></div>
+        <span class="workflow-arrow" style="align-self: center;">→</span>
+        <div class="workflow-block"><div class="icon">🔍</div><div class="label">Validation</div></div>
+        <span class="workflow-arrow" style="align-self: center;">→</span>
+        <div class="workflow-block"><div class="icon">🤝</div><div class="label">Consensus</div></div>
+        <span class="workflow-arrow" style="align-self: center;">→</span>
+        <div class="workflow-block"><div class="icon">📦</div><div class="label">Block Creation</div></div>
+        <span class="workflow-arrow" style="align-self: center;">→</span>
+        <div class="workflow-block"><div class="icon">⛓️</div><div class="label">Blockchain</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     INTERACTIVE CONSENSUS EXPLORER
+═══════════════════════════════════════════════════════════ -->
+<section id="explorer">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-compass me-2"></i>Interactive</div>
+      <h2 class="section-title">Algorithm <span class="gradient-text">Explorer</span></h2>
+      <p class="section-subtitle">Select any consensus algorithm to explore its mechanism, performance metrics, advantages, and real-world applications.</p>
+    </div>
+
+    <!-- Algorithm Selector Pills -->
+    <div class="algo-selector-wrapper animate-on-scroll">
+      <div class="algo-selector-label">
+        <i class="fas fa-sliders-h"></i>
+        Select Consensus Algorithm — All sections update dynamically
+      </div>
+      <div class="algo-pills" id="algo-pills"></div>
+    </div>
+
+    <!-- Algorithm Detail Panel -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;" id="algo-detail-panel"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BLOCKCHAIN TRILEMMA DASHBOARD
+═══════════════════════════════════════════════════════════ -->
+<section id="trilemma">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-triangle-exclamation me-2"></i>Trilemma</div>
+      <h2 class="section-title">Blockchain <span class="gradient-text">Trilemma</span></h2>
+      <p class="section-subtitle">No blockchain can simultaneously maximize Security, Scalability, AND Decentralization. Every consensus algorithm makes trade-offs.</p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Trilemma triangle -->
+      <div class="col-lg-5 animate-on-scroll">
+        <div class="glass-card h-100" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2.5rem;">
+          <!-- Triangle Illustration -->
+          <div style="position: relative; width: 260px; height: 240px; margin: 0 auto 2rem;">
+            <svg viewBox="0 0 260 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+              <defs>
+                <linearGradient id="triGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#6c63ff;stop-opacity:0.3"/>
+                  <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:0.1"/>
+                </linearGradient>
+              </defs>
+              <polygon points="130,20 20,210 240,210" fill="url(#triGrad)" stroke="rgba(108,99,255,0.4)" stroke-width="2"/>
+              <line x1="130" y1="20" x2="20" y2="210" stroke="rgba(108,99,255,0.3)" stroke-width="1" stroke-dasharray="5,5"/>
+              <line x1="130" y1="20" x2="240" y2="210" stroke="rgba(108,99,255,0.3)" stroke-width="1" stroke-dasharray="5,5"/>
+              <line x1="20" y1="210" x2="240" y2="210" stroke="rgba(108,99,255,0.3)" stroke-width="1" stroke-dasharray="5,5"/>
+            </svg>
+            <!-- Vertices -->
+            <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); background: rgba(108,99,255,0.2); border: 1px solid rgba(108,99,255,0.5); border-radius: 0.75rem; padding: 0.5rem 1rem; text-align: center; min-width: 90px;">
+              <div style="font-size: 1.25rem;">🔒</div>
+              <div style="font-size: 0.7rem; font-weight: 700; color: var(--primary-light);">SECURITY</div>
+            </div>
+            <div style="position: absolute; bottom: 0; left: 0; background: rgba(0,212,255,0.15); border: 1px solid rgba(0,212,255,0.4); border-radius: 0.75rem; padding: 0.5rem 0.75rem; text-align: center; min-width: 80px;">
+              <div style="font-size: 1.25rem;">📈</div>
+              <div style="font-size: 0.65rem; font-weight: 700; color: var(--secondary);">SCALABILITY</div>
+            </div>
+            <div style="position: absolute; bottom: 0; right: 0; background: rgba(20,241,149,0.1); border: 1px solid rgba(20,241,149,0.4); border-radius: 0.75rem; padding: 0.5rem 0.75rem; text-align: center; min-width: 80px;">
+              <div style="font-size: 1.25rem;">🌐</div>
+              <div style="font-size: 0.65rem; font-weight: 700; color: #14f195;">DECENTRALIZATION</div>
+            </div>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.7; max-width: 280px;">
+            Coined by <strong style="color: var(--text-heading);">Vitalik Buterin</strong>, the Blockchain Trilemma states that optimizing for two properties always comes at the cost of the third.
+          </p>
+        </div>
+      </div>
+
+      <!-- Score Cards + Chart -->
+      <div class="col-lg-7 animate-on-scroll delay-2">
+        <!-- Radar Chart -->
+        <div class="chart-container mb-3">
+          <div class="chart-title">Trilemma Scores — <span id="trilemma-algo-name" style="color: var(--primary-light);">Select an algorithm</span></div>
+          <div style="max-width: 360px; margin: 0 auto;">
+            <canvas id="trilemmaChart" width="360" height="280"></canvas>
+          </div>
+        </div>
+
+        <!-- Score Cards -->
+        <div class="trilemma-score-cards">
+          <div class="score-card" id="score-security">
+            <div class="score-name">Security</div>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width: 0%"></div></div>
+          </div>
+          <div class="score-card" id="score-scalability">
+            <div class="score-name">Scalability</div>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width: 0%"></div></div>
+          </div>
+          <div class="score-card" id="score-decentralization">
+            <div class="score-name">Decentralization</div>
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width: 0%"></div></div>
+          </div>
+        </div>
+
+        <!-- Metrics Summary -->
+        <div id="trilemma-summary"></div>
+      </div>
+    </div>
+
+    <!-- All Algorithms Bar Chart -->
+    <div class="chart-container animate-on-scroll mt-4">
+      <div class="chart-title">All Algorithms — Trilemma Score Comparison</div>
+      <canvas id="tpsChart" height="120"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     REAL-WORLD BLOCKCHAIN CARDS
+═══════════════════════════════════════════════════════════ -->
+<section id="blockchains">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-network-wired me-2"></i>Real-world</div>
+      <h2 class="section-title">Blockchain <span class="gradient-text">Implementations</span></h2>
+      <p class="section-subtitle">Real-world blockchains filtered by the currently selected consensus algorithm. Explore how each network applies its consensus mechanism.</p>
+    </div>
+
+    <div class="blockchain-cards-grid" id="bc-cards-grid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SMART CONTRACT LANGUAGE MAPPING
+═══════════════════════════════════════════════════════════ -->
+<section id="smart-contracts">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-code me-2"></i>Developer Tools</div>
+      <h2 class="section-title">Smart Contract <span class="gradient-text">Language Mapping</span></h2>
+      <p class="section-subtitle">Each blockchain uses different programming languages, compilers, and virtual machines for smart contract development.</p>
+    </div>
+
+    <div id="sc-table-wrapper" class="animate-on-scroll"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BLOCKCHAIN LAYER CLASSIFICATION
+═══════════════════════════════════════════════════════════ -->
+<section id="layers">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-layer-group me-2"></i>Architecture</div>
+      <h2 class="section-title">Layer <span class="gradient-text">Classification</span></h2>
+      <p class="section-subtitle">Blockchain ecosystems are organized into layers, each with distinct purposes — from network infrastructure to end-user applications.</p>
+    </div>
+
+    <div id="layer-diagram" class="animate-on-scroll"></div>
+
+    <!-- Layer Connection Visual -->
+    <div class="glass-card animate-on-scroll mt-4" style="text-align: center; padding: 2rem;">
+      <h4 style="color: var(--text-heading); font-weight: 700; margin-bottom: 1rem;">Layer Interaction Model</h4>
+      <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;">
+        <div style="text-align: center; padding: 1rem; background: rgba(236,72,153,0.1); border: 1px solid rgba(236,72,153,0.3); border-radius: 0.75rem; min-width: 120px;">
+          <div style="font-size: 1.5rem;">🌐</div>
+          <div style="font-weight: 700; color: #ec4899; font-size: 0.85rem;">Layer 0</div>
+          <div style="font-size: 0.7rem; color: var(--text-muted);">Infrastructure</div>
+        </div>
+        <div style="color: var(--primary); font-size: 1.5rem;">↕️</div>
+        <div style="text-align: center; padding: 1rem; background: rgba(108,99,255,0.1); border: 1px solid rgba(108,99,255,0.3); border-radius: 0.75rem; min-width: 120px;">
+          <div style="font-size: 1.5rem;">⛓️</div>
+          <div style="font-weight: 700; color: #6c63ff; font-size: 0.85rem;">Layer 1</div>
+          <div style="font-size: 0.7rem; color: var(--text-muted);">Base Chain</div>
+        </div>
+        <div style="color: var(--primary); font-size: 1.5rem;">↕️</div>
+        <div style="text-align: center; padding: 1rem; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3); border-radius: 0.75rem; min-width: 120px;">
+          <div style="font-size: 1.5rem;">⚡</div>
+          <div style="font-weight: 700; color: #00d4ff; font-size: 0.85rem;">Layer 2</div>
+          <div style="font-size: 0.7rem; color: var(--text-muted);">Scaling</div>
+        </div>
+        <div style="color: var(--primary); font-size: 1.5rem;">↕️</div>
+        <div style="text-align: center; padding: 1rem; background: rgba(20,241,149,0.1); border: 1px solid rgba(20,241,149,0.3); border-radius: 0.75rem; min-width: 120px;">
+          <div style="font-size: 1.5rem;">🚀</div>
+          <div style="font-weight: 700; color: #14f195; font-size: 0.85rem;">Layer 3</div>
+          <div style="font-size: 0.7rem; color: var(--text-muted);">Applications</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     COMPATIBILITY MATRIX
+═══════════════════════════════════════════════════════════ -->
+<section id="compatibility">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-th me-2"></i>Matrix</div>
+      <h2 class="section-title">Compatibility <span class="gradient-text">Matrix</span></h2>
+      <p class="section-subtitle">Click any cell to see a detailed compatibility analysis between two blockchain networks and their consensus mechanisms.</p>
+    </div>
+
+    <div id="compatibility-matrix" class="animate-on-scroll"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     COMPARISON DASHBOARD
+═══════════════════════════════════════════════════════════ -->
+<section id="comparison">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-scale-balanced me-2"></i>Compare</div>
+      <h2 class="section-title">Algorithm <span class="gradient-text">Comparison</span></h2>
+      <p class="section-subtitle">Select any two consensus algorithms and compare them side-by-side with charts, scores, and detailed metrics.</p>
+    </div>
+
+    <!-- Selectors -->
+    <div class="compare-selectors animate-on-scroll">
+      <div class="compare-selector-wrapper">
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 0.5rem;">
+          Algorithm A
+        </div>
+        <select class="compare-select" id="compare-sel-1"></select>
+      </div>
+      <div style="text-align: center;">
+        <div class="vs-badge">VS</div>
+      </div>
+      <div class="compare-selector-wrapper">
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 0.5rem;">
+          Algorithm B
+        </div>
+        <select class="compare-select" id="compare-sel-2"></select>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 animate-on-scroll">
+      <div class="col-md-6">
+        <div class="chart-container">
+          <div class="chart-title">Trilemma Radar Comparison</div>
+          <div style="max-width: 320px; margin: 0 auto;">
+            <canvas id="compareRadarChart" width="320" height="260"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-container">
+          <div class="chart-title">Score Bar Comparison</div>
+          <canvas id="compareBarChart" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side-by-side cards -->
+    <div id="compare-cards" class="animate-on-scroll"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CONSENSUS SIMULATOR
+═══════════════════════════════════════════════════════════ -->
+<section id="simulator">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-play-circle me-2"></i>Simulator</div>
+      <h2 class="section-title">Consensus <span class="gradient-text">Simulator</span></h2>
+      <p class="section-subtitle">Watch each consensus algorithm come to life with an animated step-by-step simulation of the block production process.</p>
+    </div>
+
+    <div class="simulator-wrapper animate-on-scroll">
+      <!-- Algorithm Selector -->
+      <div style="margin-bottom: 1.5rem;">
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 0.75rem;">
+          <i class="fas fa-cogs me-2"></i>Select Algorithm to Simulate
+        </div>
+        <div class="sim-algo-selector" id="sim-algo-selector"></div>
+      </div>
+
+      <!-- Simulation Stage -->
+      <div style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; overflow-x: auto;">
+        <div class="sim-stage" id="sim-stage"></div>
+      </div>
+
+      <!-- Step Description -->
+      <div id="sim-step-desc" style="background: rgba(108,99,255,0.08); border: 1px solid rgba(108,99,255,0.2); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; color: var(--text-secondary); min-height: 52px; transition: opacity 0.3s ease;">
+        👆 Select an algorithm above and press <strong>Start</strong> to begin the simulation.
+      </div>
+
+      <!-- Controls -->
+      <div class="sim-controls">
+        <button class="btn-primary-custom" id="sim-start" style="font-size: 0.875rem; padding: 0.65rem 1.5rem;">
+          <i class="fas fa-play me-2"></i>Start
+        </button>
+        <button class="btn-outline-custom" id="sim-pause" disabled style="font-size: 0.875rem; padding: 0.65rem 1.5rem;">
+          <i class="fas fa-pause me-2"></i>Pause
+        </button>
+        <button class="btn-outline-custom" id="sim-step" style="font-size: 0.875rem; padding: 0.65rem 1.5rem;">
+          <i class="fas fa-step-forward me-2"></i>Step
+        </button>
+        <button class="btn-outline-custom" id="sim-reset" style="font-size: 0.875rem; padding: 0.65rem 1.5rem; border-color: rgba(255,82,82,0.4); color: var(--danger);">
+          <i class="fas fa-redo me-2"></i>Reset
+        </button>
+      </div>
+
+      <!-- Simulation Log -->
+      <div style="margin-top: 1.5rem;">
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 0.75rem;">
+          <i class="fas fa-terminal me-2"></i>Simulation Log
+        </div>
+        <div class="sim-log" id="sim-log"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SEARCH & FILTERS
+═══════════════════════════════════════════════════════════ -->
+<section id="search-section">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-search me-2"></i>Search</div>
+      <h2 class="section-title">Search & <span class="gradient-text">Filter</span></h2>
+      <p class="section-subtitle">Find blockchains and consensus mechanisms instantly with real-time filtering.</p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar-wrapper animate-on-scroll">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-bar" id="search-input" 
+             placeholder="Search blockchains, algorithms, use cases..." 
+             aria-label="Search blockchains and algorithms">
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-row animate-on-scroll">
+      <select class="filter-select" id="filter-consensus" aria-label="Filter by consensus">
+        <option value="">All Consensus</option>
+      </select>
+      <select class="filter-select" id="filter-layer" aria-label="Filter by layer">
+        <option value="">All Layers</option>
+      </select>
+      <button class="btn-outline-custom" id="clear-filters" style="font-size: 0.875rem; padding: 0.5rem 1rem; border-radius: 9999px;">
+        <i class="fas fa-times me-1"></i>Clear
+      </button>
+      <span id="results-count" style="color: var(--text-muted); font-size: 0.85rem; align-self: center; font-weight: 600;"></span>
+    </div>
+
+    <!-- Results -->
+    <div class="search-results-grid" id="search-results"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     INTERACTIVE TIMELINE
+═══════════════════════════════════════════════════════════ -->
+<section id="timeline-section">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-timeline me-2"></i>History</div>
+      <h2 class="section-title">Blockchain <span class="gradient-text">Timeline</span></h2>
+      <p class="section-subtitle">The evolution of blockchain consensus from Satoshi's 2008 whitepaper to Ethereum's 2022 Merge and beyond. Click any event for details.</p>
+    </div>
+
+    <div id="timeline-container"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     QUIZ SECTION
+═══════════════════════════════════════════════════════════ -->
+<section id="quiz-section">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-brain me-2"></i>Test Knowledge</div>
+      <h2 class="section-title">Knowledge <span class="gradient-text">Quiz</span></h2>
+      <p class="section-subtitle">Test your understanding with 20 expert-crafted questions about blockchain consensus algorithms.</p>
+    </div>
+
+    <div class="quiz-wrapper animate-on-scroll" id="quiz-wrapper"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     REFERENCES
+═══════════════════════════════════════════════════════════ -->
+<section id="references">
+  <div class="container">
+    <div class="section-header animate-on-scroll">
+      <div class="section-badge"><i class="fas fa-book me-2"></i>Sources</div>
+      <h2 class="section-title">References & <span class="gradient-text">Resources</span></h2>
+      <p class="section-subtitle">All information sourced from official whitepapers, academic papers, and authoritative documentation.</p>
+    </div>
+
+    <div class="ref-grid animate-on-scroll">
+      <a href="https://bitcoin.org/bitcoin.pdf" target="_blank" rel="noopener" class="ref-card">
+        <span class="ref-icon">📄</span>
+        <div><div class="ref-title">Bitcoin Whitepaper</div><div class="ref-source">Satoshi Nakamoto, 2008 — bitcoin.org</div></div>
+      </a>
+      <a href="https://ethereum.org/en/developers/docs/consensus-mechanisms/" target="_blank" rel="noopener" class="ref-card">
+        <span class="ref-icon">Ξ</span>
+        <div><div class="ref-title">Ethereum Consensus Docs</div><div class="ref-source">Ethereum Foundation — ethereum.org</div></div>
+      </a>
+      <a href="https://ieeexplore.ieee.org/document/4220706" target="_blank" rel="noopener" class="ref-card">
+        <span class="ref-icon">🛡️</span>
+        <div><div class="ref-title">PBFT: Castro & Liskov</div><div class="ref-source">1999 OSDI Paper — MIT CSAIL</div></div>
+      </a>
+      <a href="https://cardano.org/research/" target="_blank" rel="noopener" class="ref-card">
+        <span class="ref-icon">₳</span>
+        <div><div class="ref-title">Cardano Ouroboros Research</div><div class="ref-source">IOHK Academic Papers — cardano.org</div></div>
+      </a>
+      <a href="https://solana.com/solana-whitepaper.pdf" target="_blank" rel="noopener" class="ref-card">
+        <span class="ref-icon">◎</span>
+        <div><div class="ref-title">Solana: Proof of History</div><div class="ref-source">Anatoly Yakovenko, 2018 — solana.com</div></div>
+      </a>
+      <a href="https://hyperledger-fabric.readthedocs.io" target="_blank" rel="noopener" class="ref-card">
+        <span class="ref-icon">⬡</span>
+        <div><div class="ref-title">Hyperledger Fabric Docs</div><div class="ref-source">Linux Foundation — hyperledger.org</div></div>
+      </a>
+      <a href="https://chia.net/assets/Chia-Business-Whitepaper-2021-02-09-v1.0.pdf" target="_blank" rel="noopener" class="ref-card">
+        <span class="ref-icon">🌱</span>
+        <div><div class="ref-title">Chia Proof of Space</div><div class="ref-source">Bram Cohen, 2021 — chia.net</div></div>
+      </a>
+      <a href="https://vitalik.eth.limo/general/2021/04/07/sharding.html" target="_blank" rel="noopener" class="ref-card">
+        <span class="ref-icon">💡</span>
+        <div><div class="ref-title">Blockchain Trilemma</div><div class="ref-source">Vitalik Buterin — vitalik.eth.limo</div></div>
+      </a>
+      <a href="https://research.algorand.com/algorand-white-papers" target="_blank" rel="noopener" class="ref-card">
+        <span class="ref-icon">🔬</span>
+        <div><div class="ref-title">Academic Consensus Research</div><div class="ref-source">Multiple institutions — algorand.com</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+      <span style="font-size: 1.5rem;">⛓️</span>
+      <span>Built for educational purposes · <span class="footer-gradient-text">Consensus Algorithms Explorer</span></span>
+    </div>
+    <p style="margin: 0; font-size: 0.8rem;">
+      Technologies: HTML5 · CSS3 · ES6 Modules · Chart.js · Bootstrap 5 · Font Awesome
+    </p>
+    <p style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+      Data sourced from official whitepapers and documentation. For academic and educational use only.
+    </p>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL
+═══════════════════════════════════════════════════════════ -->
+<div class="custom-modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="custom-modal" id="modal-content"></div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- App Modules -->
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>

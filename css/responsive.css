@@ -1,0 +1,126 @@
+/* ============================================================
+   RESPONSIVE STYLES — responsive.css
+   ============================================================ */
+
+/* ─── LARGE DESKTOP (≥1400px) ─────────────────────────────── */
+@media (min-width: 1400px) {
+  .container { max-width: 1320px; }
+  .hero-title { font-size: 5rem; }
+}
+
+/* ─── DESKTOP (≥1200px) ──────────────────────────────────── */
+@media (min-width: 1200px) {
+  .algo-detail-panel { grid-template-columns: 1fr 1fr; }
+  .consensus-info-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ─── TABLET (≤991px) ────────────────────────────────────── */
+@media (max-width: 991px) {
+  section { padding: 4rem 0; }
+  .section-title { font-size: 2rem; }
+
+  .algo-detail-panel { grid-template-columns: 1fr; }
+  .algo-header-card { flex-direction: column; }
+
+  .consensus-info-grid { grid-template-columns: 1fr; }
+
+  .compare-selectors { grid-template-columns: 1fr; }
+  .vs-badge { margin: 0; }
+
+  .timeline-wrapper { padding: 1rem 1rem; }
+  .timeline-line { display: none; }
+  .timeline-event, .timeline-event:nth-child(even) {
+    padding: 0 0 1rem 2rem;
+    justify-content: flex-start;
+  }
+  .timeline-dot { left: 0.25rem; }
+
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .matrix-container { font-size: var(--fs-xs); }
+}
+
+/* ─── MOBILE (≤767px) ────────────────────────────────────── */
+@media (max-width: 767px) {
+  .navbar { padding: 0.75rem 1rem; }
+  .hero-stats { gap: 1.5rem; }
+  .stat-number { font-size: 1.5rem; }
+
+  .concept-grid { grid-template-columns: 1fr; }
+  .blockchain-cards-grid { grid-template-columns: 1fr; }
+  .trilemma-score-cards { grid-template-columns: 1fr; }
+  .ref-grid { grid-template-columns: 1fr; }
+
+  .blockchain-workflow { gap: 0.25rem; }
+  .workflow-block { min-width: 70px; padding: 0.75rem 0.5rem; }
+  .workflow-block .icon { font-size: 1.2rem; }
+
+  .quiz-wrapper { padding: 1.5rem; }
+  .quiz-question { font-size: var(--fs-base); }
+
+  .algo-selector-wrapper { padding: 1.25rem; }
+  .simulator-wrapper { padding: 1.5rem; }
+
+  .metrics-grid { grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+  .metric-value { font-size: var(--fs-lg); }
+
+  .hero-cta { flex-direction: column; align-items: center; }
+  .btn-primary-custom, .btn-outline-custom { width: 100%; justify-content: center; }
+
+  .sim-stage { gap: 0.25rem; }
+  .sim-step { min-width: 60px; padding: 0.5rem 0.25rem; }
+  .sim-step .step-icon { font-size: 1.4rem; }
+
+  .layer-item { padding: 1.25rem; }
+  .layer-label { font-size: var(--fs-xl); }
+
+  .sc-table th, .sc-table td { padding: 0.6rem 0.75rem; font-size: var(--fs-xs); }
+}
+
+/* ─── SMALL MOBILE (≤480px) ──────────────────────────────── */
+@media (max-width: 480px) {
+  .hero-title { font-size: 1.9rem; }
+  .hero-subtitle { font-size: 0.95rem; }
+  .section-title { font-size: 1.6rem; }
+
+  .algo-pills { gap: 0.4rem; }
+  .algo-pill { padding: 0.4rem 0.8rem; font-size: var(--fs-xs); }
+
+  .bc-info-grid { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+
+  .compare-selectors { gap: 1rem; }
+  .quiz-header { flex-direction: column; align-items: flex-start; }
+
+  .sim-controls { flex-direction: column; }
+  .sim-controls button { width: 100%; }
+}
+
+/* ─── PRINT ──────────────────────────────────────────────── */
+@media print {
+  .navbar, #scroll-progress, #theme-toggle, .hero-cta, .sim-controls,
+  .quiz-section, #hero-canvas { display: none !important; }
+
+  body { background: white; color: black; }
+  .glass-card, .concept-card, .bc-card { background: white; border: 1px solid #ddd; }
+  .section-title, .algo-name { color: black; }
+  section { padding: 2rem 0; page-break-inside: avoid; }
+}
+
+/* ─── HIGH CONTRAST ──────────────────────────────────────── */
+@media (prefers-contrast: high) {
+  :root {
+    --border-glass: rgba(255,255,255,0.4);
+    --text-secondary: #c0c0c0;
+  }
+}
+
+/* ─── REDUCED MOTION ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}

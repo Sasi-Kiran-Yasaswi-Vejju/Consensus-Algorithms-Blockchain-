@@ -1,0 +1,152 @@
+/* ============================================================
+   DESIGN TOKENS — variables.css
+   Consensus Algorithms Blockchain Explorer
+   ============================================================ */
+
+:root {
+  /* ─── Brand Colors ─────────────────────────────────────── */
+  --primary:        #6c63ff;
+  --primary-light:  #8b85ff;
+  --primary-dark:   #4a43cc;
+  --secondary:      #00d4ff;
+  --accent:         #ff6b6b;
+  --success:        #00e676;
+  --warning:        #ffd740;
+  --danger:         #ff5252;
+
+  /* ─── Algorithm Colors ──────────────────────────────────── */
+  --pow-color:      #f7931a;
+  --pos-color:      #627eea;
+  --dpos-color:     #22c55e;
+  --pbft-color:     #a855f7;
+  --poa-color:      #06b6d4;
+  --poh-color:      #14f195;
+  --pob-color:      #ef4444;
+  --poc-color:      #f97316;
+  --poet-color:     #84cc16;
+  --poact-color:    #ec4899;
+  --pospace-color:  #8b5cf6;
+  --poimp-color:    #0ea5e9;
+
+  /* ─── Dark Mode (Default) ───────────────────────────────── */
+  --bg-primary:     #0a0e1a;
+  --bg-secondary:   #0f1629;
+  --bg-card:        rgba(15, 22, 41, 0.8);
+  --bg-card-hover:  rgba(20, 30, 55, 0.95);
+  --bg-glass:       rgba(255, 255, 255, 0.05);
+  --bg-glass-hover: rgba(255, 255, 255, 0.1);
+  --border-glass:   rgba(255, 255, 255, 0.12);
+  --border-glow:    rgba(108, 99, 255, 0.4);
+
+  --text-primary:   #e8eaf6;
+  --text-secondary: #9fa8da;
+  --text-muted:     #5c6bc0;
+  --text-heading:   #ffffff;
+
+  /* ─── Gradients ─────────────────────────────────────────── */
+  --grad-hero:      linear-gradient(135deg, #0a0e1a 0%, #0f1629 50%, #0a0e1a 100%);
+  --grad-primary:   linear-gradient(135deg, #6c63ff 0%, #00d4ff 100%);
+  --grad-card:      linear-gradient(145deg, rgba(108, 99, 255, 0.15) 0%, rgba(0, 212, 255, 0.05) 100%);
+  --grad-pow:       linear-gradient(135deg, #f7931a, #e8650a);
+  --grad-pos:       linear-gradient(135deg, #627eea, #4a5fd4);
+  --grad-dpos:      linear-gradient(135deg, #22c55e, #16a34a);
+  --grad-pbft:      linear-gradient(135deg, #a855f7, #7c3aed);
+  --grad-poa:       linear-gradient(135deg, #06b6d4, #0891b2);
+  --grad-poh:       linear-gradient(135deg, #14f195, #05c476);
+  --grad-section:   linear-gradient(180deg, transparent 0%, rgba(108,99,255,0.03) 50%, transparent 100%);
+
+  /* ─── Shadows ───────────────────────────────────────────── */
+  --shadow-sm:      0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md:      0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg:      0 8px 40px rgba(0, 0, 0, 0.5);
+  --shadow-glow:    0 0 30px rgba(108, 99, 255, 0.3);
+  --shadow-card:    0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+
+  /* ─── Typography ────────────────────────────────────────── */
+  --font-sans:      'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:      'JetBrains Mono', 'Fira Code', monospace;
+  --fs-xs:          0.75rem;
+  --fs-sm:          0.875rem;
+  --fs-base:        1rem;
+  --fs-lg:          1.125rem;
+  --fs-xl:          1.25rem;
+  --fs-2xl:         1.5rem;
+  --fs-3xl:         1.875rem;
+  --fs-4xl:         2.25rem;
+  --fs-5xl:         3rem;
+  --fw-light:       300;
+  --fw-normal:      400;
+  --fw-medium:      500;
+  --fw-semibold:    600;
+  --fw-bold:        700;
+  --fw-extrabold:   800;
+  --lh-tight:       1.2;
+  --lh-normal:      1.6;
+
+  /* ─── Spacing ───────────────────────────────────────────── */
+  --space-xs:       0.25rem;
+  --space-sm:       0.5rem;
+  --space-md:       1rem;
+  --space-lg:       1.5rem;
+  --space-xl:       2rem;
+  --space-2xl:      3rem;
+  --space-3xl:      4rem;
+  --space-section:  6rem;
+
+  /* ─── Border Radius ─────────────────────────────────────── */
+  --radius-sm:      0.375rem;
+  --radius-md:      0.75rem;
+  --radius-lg:      1rem;
+  --radius-xl:      1.5rem;
+  --radius-2xl:     2rem;
+  --radius-full:    9999px;
+
+  /* ─── Transitions ───────────────────────────────────────── */
+  --trans-fast:     all 0.15s ease;
+  --trans-base:     all 0.25s ease;
+  --trans-slow:     all 0.4s ease;
+  --trans-bounce:   all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ─── Z-Index Scale ─────────────────────────────────────── */
+  --z-base:         1;
+  --z-card:         10;
+  --z-dropdown:     100;
+  --z-sticky:       200;
+  --z-overlay:      300;
+  --z-modal:        400;
+  --z-tooltip:      500;
+
+  /* ─── Glassmorphism ─────────────────────────────────────── */
+  --glass-bg:       rgba(255, 255, 255, 0.04);
+  --glass-border:   1px solid rgba(255, 255, 255, 0.1);
+  --glass-blur:     backdrop-filter: blur(20px);
+}
+
+/* ─── Light Mode ─────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-primary:     #f0f2ff;
+  --bg-secondary:   #e8ebff;
+  --bg-card:        rgba(255, 255, 255, 0.9);
+  --bg-card-hover:  rgba(255, 255, 255, 1);
+  --bg-glass:       rgba(108, 99, 255, 0.06);
+  --bg-glass-hover: rgba(108, 99, 255, 0.1);
+  --border-glass:   rgba(108, 99, 255, 0.2);
+  --border-glow:    rgba(108, 99, 255, 0.3);
+
+  --text-primary:   #1a1f3c;
+  --text-secondary: #3949ab;
+  --text-muted:     #7986cb;
+  --text-heading:   #0d1117;
+
+  --grad-hero:      linear-gradient(135deg, #f0f2ff 0%, #e8ebff 50%, #f0f2ff 100%);
+  --grad-card:      linear-gradient(145deg, rgba(108, 99, 255, 0.08) 0%, rgba(0, 212, 255, 0.04) 100%);
+
+  --shadow-sm:      0 2px 8px rgba(108, 99, 255, 0.1);
+  --shadow-md:      0 4px 20px rgba(108, 99, 255, 0.15);
+  --shadow-lg:      0 8px 40px rgba(108, 99, 255, 0.2);
+  --shadow-glow:    0 0 30px rgba(108, 99, 255, 0.2);
+  --shadow-card:    0 8px 32px rgba(108, 99, 255, 0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+
+  --glass-bg:       rgba(255, 255, 255, 0.7);
+  --glass-border:   1px solid rgba(108, 99, 255, 0.15);
+}
